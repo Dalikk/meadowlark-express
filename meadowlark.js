@@ -1,31 +1,29 @@
 const express = require('express')
+const { engine } = require('express-handlebars')
 
 const app = express()
 
+// Настройка механизма представлений Handlebars
+app.engine('handlebars', engine())
+app.set('view engine', 'handlebars')
+app.set('views', './views')
+
 const port = process.env.PORT || 3000
 
-app.get('/', (req, res) => {
-    res.type('text/plain');
-    res.send('Meadowlark Travel');
-});
+app.get('/', (req, res) => res.render('home'));
 
-app.get('/about', (req, res) => {
-    res.type('text/plain');
-    res.send('О Meadowlark Travel');
-});
+app.get('/about', (req, res) => res.render('about'));
 
 // Пользовательская страница 404
 app.use((req, res) => {
-    res.type('text/plain');
     res.status(404);
-    res.send('404 - не найдено');
+    res.render('404');
 });
 
 // Пользовательская страница 500
 app.use((req, res) => {
-    res.type('text/plain');
     res.status(500);
-    res.send('500 - ошибка сервера');
+    res.render('500');
 })
 
 app.listen(port, () => console.log(
