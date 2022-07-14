@@ -2,10 +2,10 @@
   "name": "meadowlark",
   "version": "1.0.0",
   "description": "",
-  "main": "meadowlark.js",
+  "main": "app.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint meadowlark.js lib"
+    "lint": "eslint app.js lib"
   },
   "author": "",
   "license": "ISC",
