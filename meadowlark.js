@@ -1,11 +1,21 @@
 const handlers = require('./lib/handlers');
 const express = require('express');
-const { engine } = require('express-handlebars');
+const { create } = require('express-handlebars');
 
 const app = express();
 
+const hbs = create({
+  helpers: {
+    section: function (name, options) {
+      if(!this._sections) this._sections = {};
+      this._sections[name] = options.fn(this);
+      return null;
+    }
+  },
+});
+
 // Настройка механизма представлений Handlebars
-app.engine('handlebars', engine());
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 
@@ -24,9 +34,9 @@ app.use(handlers.notFound);
 app.use(handlers.serverError);
 
 if (require.main === module) {
-    app.listen(port, () => console.log(
-        `Express запущен на http://localhost:${port} ` +
+  app.listen(port, () => console.log(
+    `Express запущен на http://localhost:${port} ` +
         'нажмите Ctrl + C для завершения'));
 } else {
-    module.exports = app;
+  module.exports = app;
 }
