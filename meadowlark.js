@@ -1,8 +1,10 @@
 const handlers = require('./lib/handlers');
 const express = require('express');
+const bodyParser = require('body-parser');
 const { create } = require('express-handlebars');
 
 const app = express();
+app.use(bodyParser.urlencoded({ extend: true }));
 
 const hbs = create({
   helpers: {
@@ -26,6 +28,12 @@ const port = process.env.PORT || 3000;
 app.get('/', handlers.home);
 
 app.get('/about', handlers.about);
+
+app.get('/newsletter-signup', handlers.newsletterSignup);
+
+app.post('/newsletter-signup/process', handlers.newsletterSignupProcess);
+
+app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou);
 
 // Пользовательская страница 404
 app.use(handlers.notFound);
