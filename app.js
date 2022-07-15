@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const multiparty = require('multiparty');
 const cookieParser = require('cookie-parser');
 const expressSession = require('express-session');
+const flashMiddleware = require('./lib/middleware/flash');
 const { credentials } = require('./conifg');
 const { create } = require('express-handlebars');
 
@@ -16,6 +17,7 @@ app.use(expressSession({
   saveUninitialized: false,
   secret: credentials.cookieSecret,
 }));
+app.use(flashMiddleware);
 
 const hbs = create({
   helpers: {
@@ -46,6 +48,8 @@ app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou);
 
 app.get('/newsletter', handlers.newsletter);
 app.post('/api/newsletter-signup', handlers.api.newsletterSignup);
+
+app.get('/newsletter-archive', handlers.newsletterArchive);
 
 app.get('/contest/vacation-photo', handlers.vacationPhotoContest);
 app.get('/contest/vacation-photo-ajax', handlers.vacationPhotoContestAjax);
